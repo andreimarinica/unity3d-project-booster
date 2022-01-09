@@ -1,13 +1,24 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+
 
 public class Movement : MonoBehaviour
 {
-    Rigidbody rb;
-    AudioSource audioSource;
+    // PARAMETERS
     [SerializeField] float mainThrust = 100f;
     [SerializeField] float rotationThrust = 100f;
+    [SerializeField] AudioClip mainEngine;
+    [SerializeField] ParticleSystem mainBooster;
+    [SerializeField] ParticleSystem secondaryBooster;
+    [SerializeField] ParticleSystem leftBooster;
+    [SerializeField] ParticleSystem rightBooster;
+    // CHACHING
+    Rigidbody rb;
+    AudioSource audioSource;
+    // STATES
+    // bool isAlive;
     // Start is called before the first frame update
     void Start()
     {
@@ -31,20 +42,31 @@ public class Movement : MonoBehaviour
             //rb.AddRelativeForce(Vector3.up * Time.deltaTime * mainThrust);
             rb.AddRelativeForce(Vector3.forward * Time.deltaTime * mainThrust);
             if(!audioSource.isPlaying) {
-                audioSource.Play();
+                audioSource.PlayOneShot(mainEngine);
             }
+            if(!mainBooster.isPlaying)
+            {
+                mainBooster.Play();
+            }
+            
             
         }
         else if(Input.GetKey(KeyCode.LeftShift))
         {
             rb.AddRelativeForce(-Vector3.forward * Time.deltaTime * mainThrust);
             if(!audioSource.isPlaying) {
-                audioSource.Play();
+                audioSource.PlayOneShot(mainEngine);
+            }
+            if(!secondaryBooster.isPlaying)
+            {
+                secondaryBooster.Play();
             }
         } 
         else 
         {
                 audioSource.Stop();
+                mainBooster.Stop();
+                secondaryBooster.Stop();
         }
         
     }
@@ -54,12 +76,26 @@ public class Movement : MonoBehaviour
         {
             //Debug.Log("Pressed A - ROTATING LEFT");
             ApplyRotation(rotationThrust);
+            if(!rightBooster.isPlaying)
+            {
+                rightBooster.Play();
+            }
         }
         else if(Input.GetKey(KeyCode.D))
         {
             //Debug.Log("Pressed D - ROTATING RIGHT");
             ApplyRotation(-rotationThrust);
+            if(!leftBooster.isPlaying)
+            {
+                leftBooster.Play();
+            }
         }
+        else 
+        {
+            rightBooster.Stop();
+            leftBooster.Stop();
+        }
+
     }
 
     void ApplyRotation(float rotationThisFrame)
@@ -69,4 +105,5 @@ public class Movement : MonoBehaviour
         transform.Rotate(Vector3.down * Time.deltaTime * rotationThisFrame);
         rb.freezeRotation = false;
     }
+
 }

@@ -4,7 +4,21 @@ using UnityEngine.SceneManagement;
 public class CollisionHandler : MonoBehaviour
 {
     [SerializeField] float delayTime = 2f;
+    [SerializeField] AudioClip crashSound;
+    [SerializeField] AudioClip successLandingSound;
+    [SerializeField] ParticleSystem crashParticle;
+    [SerializeField] ParticleSystem successLandingParticle;
+    AudioSource audioSource;
+
+    bool isTransitioning = false;
+
+    void Start() {
+        audioSource = GetComponent<AudioSource>();
+    }
+    
     void OnCollisionEnter(Collision other) {
+        if(isTransitioning) { return; }
+
         switch (other.gameObject.tag)
         {
             case "Friendly":
@@ -23,21 +37,28 @@ public class CollisionHandler : MonoBehaviour
 
     void StartCrashSequence()
     {
-        //TODO: add SFX upon crash
         //TODO: add particle effects upon crash
 
         GetComponent<Movement>().enabled = false;
-        GetComponent<AudioSource>().Stop();
+        audioSource.Stop();
+        audioSource.PlayOneShot(crashSound);
+        crashParticle.Play();
+        isTransitioning = true;
         Invoke("ReloadLevel", delayTime);
     }
 
     void StartChangingLevelSequence()
     {
-        //TODO: add SFX upon crash
         //TODO: add particle effects upon crash
 
         GetComponent<Movement>().enabled = false;
-        GetComponent<AudioSource>().Stop();
+        audioSource.Stop();
+        if(!audioSource.isPlaying) 
+        {
+            audioSource.PlayOneShot(successLandingSound);
+        } 
+        successLandingParticle.Play();
+        isTransitioning = true;    
         Invoke("LoadNextLevel", delayTime);
     }
     void ReloadLevel()
