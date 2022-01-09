@@ -5,12 +5,14 @@ using UnityEngine;
 public class Movement : MonoBehaviour
 {
     Rigidbody rb;
+    AudioSource audioSource;
     [SerializeField] float mainThrust = 100f;
     [SerializeField] float rotationThrust = 100f;
     // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody>();
+        audioSource = GetComponent<AudioSource>();
         
     }
 
@@ -28,10 +30,21 @@ public class Movement : MonoBehaviour
             //Debug.Log("Pressed SPACE - THURSTING");
             //rb.AddRelativeForce(Vector3.up * Time.deltaTime * mainThrust);
             rb.AddRelativeForce(Vector3.forward * Time.deltaTime * mainThrust);
+            if(!audioSource.isPlaying) {
+                audioSource.Play();
+            }
+            
         }
         else if(Input.GetKey(KeyCode.LeftShift))
         {
             rb.AddRelativeForce(-Vector3.forward * Time.deltaTime * mainThrust);
+            if(!audioSource.isPlaying) {
+                audioSource.Play();
+            }
+        } 
+        else 
+        {
+                audioSource.Stop();
         }
         
     }
@@ -57,5 +70,3 @@ public class Movement : MonoBehaviour
         rb.freezeRotation = false;
     }
 }
-// git hub test
-// test 2
