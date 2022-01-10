@@ -130,6 +130,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 169949808, guid: 0eb1dc9b0d8505f45a18313076e1e653, type: 3}
+      propertyPath: rotationThrust
+      value: 100
+      objectReference: {fileID: 0}
     - target: {fileID: 169949815, guid: 0eb1dc9b0d8505f45a18313076e1e653, type: 3}
       propertyPath: crashParticle
       value: 
@@ -148,7 +152,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4365625331430498, guid: 0eb1dc9b0d8505f45a18313076e1e653, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 9.44
+      value: 3.01
       objectReference: {fileID: 0}
     - target: {fileID: 4365625331430498, guid: 0eb1dc9b0d8505f45a18313076e1e653, type: 3}
       propertyPath: m_LocalPosition.z

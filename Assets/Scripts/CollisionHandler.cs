@@ -17,7 +17,8 @@ public class CollisionHandler : MonoBehaviour
     }
     
     void OnCollisionEnter(Collision other) {
-        if(isTransitioning) { return; }
+        
+        if(isTransitioning || GetComponent<DebugTools>().collisionDisabled) { return; }
 
         switch (other.gameObject.tag)
         {
